@@ -26,26 +26,26 @@ def get_webpage(symbol, company_name):
     try:
         driver.get(url)
         result = driver.page_source
-        book_value = float(driver.find_element_by_xpath('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[8]/p/span').get_attribute('innerHTML').replace(',',''))
-        stock_cmp = float(driver.find_element_by_xpath('//*[@id="mainContent_clsprice"]/span/span').get_attribute('innerHTML').replace(',',''))
-        mcap = float(driver.find_element_by_xpath('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[1]/p/span').get_attribute('innerHTML').replace(',',''))
-        cash = float(driver.find_element_by_xpath('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[9]/p/span/span').get_attribute('innerHTML').replace(',',''))
-        debt = float(driver.find_element_by_xpath('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[10]/p/span/span').get_attribute('innerHTML').replace(',',''))
-        roe = float(driver.find_element_by_xpath('//*[@id="mainContent_updAddRatios"]/div[14]/p/span').get_attribute('innerHTML').replace(',',''))
-        eps = float(driver.find_element_by_xpath('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[12]/p/span').get_attribute('innerHTML').replace(',',''))
+        book_value = float(driver.find_element('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[8]/p/span').get_attribute('innerHTML').replace(',',''))
+        stock_cmp = float(driver.find_element('//*[@id="mainContent_clsprice"]/span/span').get_attribute('innerHTML').replace(',',''))
+        mcap = float(driver.find_element('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[1]/p/span').get_attribute('innerHTML').replace(',',''))
+        cash = float(driver.find_element('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[9]/p/span/span').get_attribute('innerHTML').replace(',',''))
+        debt = float(driver.find_element('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[10]/p/span/span').get_attribute('innerHTML').replace(',',''))
+        roe = float(driver.find_element('//*[@id="mainContent_updAddRatios"]/div[14]/p/span').get_attribute('innerHTML').replace(',',''))
+        eps = float(driver.find_element('/html/body/form/div[6]/div[2]/div[2]/div/div[2]/div[12]/p/span').get_attribute('innerHTML').replace(',',''))
         extract_ratings(symbol, company_name, result, book_value, stock_cmp, mcap, cash, debt, roe, eps)
     except:
         print("Unable to load: ", url)
         pass
     
 def read_nse_companies():
-    df = pd.read_excel('NSE_MAR21.xlsx',index_col=0)
+    df = pd.read_excel('NSE_DEC21.xlsx',index_col=0)
     for symbol, company_name in zip(df['Symbol'],df['Company Name']):
         get_webpage(symbol, company_name)
 
 if __name__ == "__main__":
     driver = webdriver.Firefox()
-    csv_file = open('attractive_stonks.csv', 'w')
+    csv_file = open('attractive_stonks_jan2022.csv', 'w')
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(['Symbol', 'Company Name', 'Overall Rating','Ownership','Valuation','Efficiency','Financials', 'CMP', 'Book Value', 'Discount %', 'Potential Upside %', 'MCAP', 'Debt', 'ROE', 'EPS'])
     read_nse_companies()
