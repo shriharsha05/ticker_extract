@@ -42,14 +42,14 @@ def get_webpage(symbol, company_name):
         
     
 def read_nse_companies():
-    df = pd.read_excel('NSE_MAR23.xlsx',index_col=0)
+    df = pd.read_excel('NSE_MAR24.xlsx',index_col=0)
     for symbol, company_name in zip(df['Symbol'],df['Company Name']):
         get_webpage(symbol, company_name)
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore", category=DeprecationWarning) 
     driver = webdriver.Firefox()
-    csv_file = open('attractive_stonks_26_oct_2023.csv', 'a')
+    csv_file = open('attractive_stonks_10_apr_2024.csv', 'a')
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(['Symbol', 'Company Name', 'Overall Rating','Ownership','Valuation','Efficiency','Financials', 'CMP', 'Book Value', 'Discount %', 'Potential Upside %', 'MCAP', 'Debt', 'ROE', 'EPS'])
     read_nse_companies()
